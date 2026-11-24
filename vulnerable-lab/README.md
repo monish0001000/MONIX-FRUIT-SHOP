@@ -1,28 +1,19 @@
-# MONIX Vulnerable Lab
+# MONIX Market — Test Environment
 
-A browser-only security training environment using synthetic data. It is intentionally vulnerable by design and is separate from the Secure Store.
+This environment intentionally mirrors the Secure Store's storefront interface exactly. Its purpose is to support controlled comparison of application behavior while keeping the user experience visually identical.
 
-## Included exercises
+## Deliberate security difference
 
-| Exercise | Demonstration | Safer design |
-|---|---|---|
-| DOM XSS | Untrusted input reaches `innerHTML` | Use `textContent` or safe templating |
-| Untrusted local storage | Browser-controlled role string | Server-side identity and authorization |
-| Client-side access control | UI checks a role from local storage | Enforce permissions on every server request |
-| SQL injection concept | Shows an unsafe concatenated query string; does not execute SQL | Parameterized queries |
+- `POST /api/quote` trusts the client-submitted `price` and `quantity` values when calculating a quote.
+- The endpoint is stateless and uses synthetic catalogue data only.
+- No order is created, no payment is processed and no customer data is stored.
+- The product catalogue is shared in shape with the Secure Store so the same UI works in both environments.
 
-## Safety
+## API
+- `GET /api/products`
+- `POST /api/quote`
 
-- No backend or database is connected.
-- No real accounts, passwords, payment, order data or personal information.
-- The XSS exercise runs only in this lab page's browser origin.
-- Do not enter real credentials or test third-party targets.
-- Refresh the page to clear the temporary exercise state.
+## Authorized testing
+Only test this project deployment: https://monix-vulnerable-lab.vercel.app. Use synthetic values. Do not enter real personal information or credentials and do not test third-party systems.
 
-## Important scope note
-
-The SQLi section is a query-construction illustration only. It is not a live SQL injection endpoint. The local-storage and client-side role exercises demonstrate browser trust failures, not bypasses of a real server-side authentication system.
-
-## Run locally
-
-Serve this directory with a static web server and open `index.html`.
+The visual interface intentionally does not identify the environment. The security distinction is documented here and in the repository's `documentation/SECURITY-SCOPE.md`.
