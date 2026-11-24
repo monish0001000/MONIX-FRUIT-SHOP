@@ -1,0 +1,1 @@
+module.exports = (_req, res) => res.status(200).json({ status: "ok", service: "monix-secure-store-api", mode: "demo-no-persistence" });
