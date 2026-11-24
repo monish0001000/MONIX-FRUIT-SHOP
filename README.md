@@ -1,90 +1,73 @@
-# MONIX Fruit Shop — Dual-Environment Application Security Project 🍊
+# MONIX Market — Identical Storefront / Dual API Security Project 🍊
 
-A portfolio project that compares a secure-by-design fruit-shop storefront with an intentionally vulnerable web-security training lab. It demonstrates secure implementation patterns, controlled vulnerability demonstrations, and remediation concepts.
+A portfolio project featuring two visually identical, modern fruit-storefront deployments. Both use the same exact storefront HTML, CSS and JavaScript; the difference is in their server-side quote handling.
 
-## Live environments
+## Live links
 
-| Environment | Live URL | Status |
-|---|---|---|
-| Project Hub | https://monix-fruit-shop-portal.vercel.app | Deployed |
-| Secure Store | https://monix-secure-store.vercel.app | Deployed |
-| Vulnerable Lab | https://monix-vulnerable-lab.vercel.app | Deployed |
-| Previous Vulnerable Lab deployment | https://vulnlab-security-playground.vercel.app | Existing deployment |
+| Project | URL |
+|---|---|
+| Project Hub | https://monix-fruit-shop-portal.vercel.app |
+| MONIX Market — Storefront A | https://monix-secure-store.vercel.app |
+| MONIX Market — Storefront B | https://monix-vulnerable-lab.vercel.app |
+| GitHub | https://github.com/monish0001000/MONIX-FRUIT-SHOP |
+
+The storefront UI intentionally does not reveal which deployment is the test environment. The repository documentation records the authorized testing scope and implementation differences.
+
+## Visual experience
+
+- Shared premium light theme and identical storefront markup across both deployments.
+- Responsive navigation, hero composition, category chips, product search and sorting.
+- Animated fruit illustrations, hover transitions, scroll reveal, reading progress indicator and toast feedback.
+- Product favourites, quantity controls and slide-in basket drawer.
+- Responsive layouts for mobile, tablet and desktop.
+
+## Security comparison
+
+### Storefront A — secure quote API
+- Uses a server-owned price map and ignores client-submitted prices.
+- Validates product IDs, unique items, integer quantities and quantity limits.
+- Performs same-origin validation for browser POST requests when Origin is present.
+- Uses no-store quote responses and baseline browser security headers.
+
+### Storefront B — intentionally weak quote API
+- Uses client-submitted price and quantity values to calculate the quote.
+- Demonstrates a business-logic trust failure for authorized testing.
+- Uses only synthetic catalogue data; no orders, payments or customer records are stored.
 
 ## Repository layout
 
 ```text
 MONIX-FRUIT-SHOP/
-├── index.html                     # Original fruit storefront prototype
-├── portal/
-│   └── index.html                 # Portfolio project hub
+├── portal/index.html
 ├── secure-store/
-│   ├── index.html                 # Secure-store UI
-│   ├── api/
-│   │   ├── products.js            # Server-owned product catalogue
-│   │   ├── quote.js               # Server-side cart validation and pricing
-│   │   └── health.js              # API health check
-│   ├── tests/
-│   │   └── quote.test.js          # Node test coverage for quote validation
-│   ├── vercel.json                # Security response headers
-│   └── README.md
+│   ├── index.html
+│   ├── api/products.js
+│   ├── api/quote.js
+│   ├── api/health.js
+│   ├── vercel.json
+│   └── tests/quote.test.js
 ├── vulnerable-lab/
-│   ├── index.html                 # Browser-only security challenges
-│   └── README.md
-├── documentation/
-│   ├── ARCHITECTURE.md
-│   ├── SECURITY-SCOPE.md
-│   └── TEST-PLAN.md
-├── README.md
-└── LICENSE
+│   ├── index.html
+│   └── api/
+│       ├── products.js
+│       └── quote.js
+└── documentation/
+    ├── ARCHITECTURE.md
+    ├── SECURITY-SCOPE.md
+    ├── TEST-PLAN.md
+    └── TEST-RESULTS.md
 ```
 
-## Secure Store — implemented controls
+## Safe-use boundary
 
-- Server-owned product prices; client-submitted price values are ignored.
-- Cart API validates known product IDs, duplicate items, integer quantities and quantity limits.
-- Same-origin validation for browser POST requests when an Origin header is present.
-- Baseline CSP, clickjacking, MIME-sniffing, referrer and permissions headers.
-- API quote responses are not cached.
-- Browser output escapes catalogue text.
+Both are educational demonstrations, not production e-commerce applications. There is no login, database, persistent cart, order creation, payment processing, stock management or delivery integration. A quote is not an order. Test only the designated MONIX test deployment using synthetic data. Do not enter real credentials or personal information.
 
-### Secure Store limitations
-
-This is an educational storefront/API demo, not a production commerce system. It has no login, user accounts, persistent cart, order database, stock management, payment processing, email/SMS or delivery integrations. A quote is not an order. Do not use it for real transactions.
-
-## Vulnerable Lab — implemented exercises
-
-- DOM XSS: intentionally unsafe `innerHTML` sink.
-- Untrusted local storage: demonstrates why browser storage cannot be trusted.
-- Client-side access control: demonstrates why UI-only role checks do not provide authorization.
-- SQL injection concept: shows unsafe query concatenation but does not execute SQL or connect to a database.
-
-The lab is a browser-only, synthetic-data training page. Never enter real credentials or personal information. Use only for authorized learning and testing.
-
-## Test plan
-
-See [documentation/TEST-PLAN.md](documentation/TEST-PLAN.md) for the API and lab test matrix, and [documentation/TEST-RESULTS.md](documentation/TEST-RESULTS.md) for the local unit-test record. Run secure API tests with:
+## Run secure API tests
 
 ```bash
 cd secure-store
 npm test
 ```
-
-## Architecture and safe scope
-
-- [Architecture](documentation/ARCHITECTURE.md)
-- [Authorized testing scope](documentation/SECURITY-SCOPE.md)
-- [Secure Store notes](secure-store/README.md)
-- [Vulnerable Lab notes](vulnerable-lab/README.md)
-
-The Secure Store and Vulnerable Lab are deployed as separate Vercel projects. They do not share databases, credentials, sessions or application state. The current secure API is stateless and does not connect to a database.
-
-## Technology
-
-- HTML, CSS and JavaScript
-- Vercel serverless Node.js functions
-- GitHub
-- Node.js built-in test runner
 
 ## License
 
