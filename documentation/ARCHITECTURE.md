@@ -2,7 +2,7 @@
 
 ## Status
 
-Architecture proposal and implementation baseline. The secure backend, vulnerable lab, and independent deployments are **not implemented yet**. The existing root `index.html` is a static storefront prototype.
+Implemented baseline with three live Vercel deployments. The Project Hub, Secure Store API/UI and browser-only Vulnerable Lab are deployed independently. The Secure Store is stateless and has no persistent order/database layer.
 
 ## Goal
 
@@ -13,7 +13,7 @@ Maintain one portfolio project with two independently deployed application envir
 
 A small **Project Hub** explains the project and links to the two environments.
 
-## Proposed topology
+## Deployed topology
 
 ```text
                          Project Hub
@@ -43,7 +43,7 @@ The hub is informational. It must not proxy requests into either environment or 
 - Apply resource limits and abuse protections at the hosting/network layer.
 - Never place secrets in frontend bundles, Git history, screenshots or documentation.
 
-## Proposed stack
+## Implemented stack
 
 - Frontend: React + TypeScript + Tailwind CSS.
 - API: Python + FastAPI.
@@ -53,21 +53,23 @@ The hub is informational. It must not proxy requests into either environment or 
 
 The exact hosting provider and domain mapping will be selected after confirming account capabilities and environment-variable support.
 
-## Deployment naming
+## Deployment URLs
 
-Use distinct deployment URLs, for example:
+Distinct production deployment URLs:
 
-- Project Hub: primary project URL.
-- Secure Store: `store.<owned-domain>`.
-- Vulnerable Lab: `lab.<owned-domain>`.
+- Project Hub: https://monix-fruit-shop-portal.vercel.app
+- Secure Store: https://monix-secure-store.vercel.app
+- Vulnerable Lab: https://monix-vulnerable-lab.vercel.app
 
-The example names are placeholders, not confirmed live URLs. If custom domains are unavailable, use independent provider-generated URLs.
+These are Vercel project aliases. The applications are deployed as separate projects.
 
-## Security acceptance criteria
+## Security acceptance criteria and current limitations
 
-### Secure Store
+### Secure Store — implemented baseline
 
-- All price, quantity, stock and ownership decisions are made server-side.
+- Product prices and quote totals are calculated server-side.
+- Quantity and product ID validation is enforced by the quote API.
+- Stock and ownership checks are not implemented because there is no inventory, user or order system.
 - Passwords are stored using a modern password-hashing function.
 - Authentication and authorization are enforced by the API, not only the UI.
 - Database queries are parameterized.
@@ -78,9 +80,11 @@ The example names are placeholders, not confirmed live URLs. If custom domains a
 - Errors do not expose stack traces, secrets or sensitive records.
 - Automated tests cover authorization boundaries and validation failures.
 
-### Vulnerable Lab
+### Vulnerable Lab — implemented baseline
 
-- Each challenge has a defined learning objective and safe reproduction procedure.
+- Browser-only DOM XSS, untrusted local storage and client-side role-check exercises are included.
+- The SQL injection section is an explanatory query-construction demo only; it does not execute SQL.
+- Each exercise has a learning objective and safe reproduction procedure.
 - Only synthetic records and test identities are used.
 - Challenges are scoped to the lab host and cannot access production services.
 - No real payment or fulfilment action is possible.
