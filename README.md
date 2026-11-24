@@ -63,7 +63,7 @@ The lab is a browser-only, synthetic-data training page. Never enter real creden
 
 ## Test plan
 
-See [documentation/TEST-PLAN.md](documentation/TEST-PLAN.md) for the API and lab test matrix. Tests are not marked passed unless executed and recorded. Run secure API tests with:
+See [documentation/TEST-PLAN.md](documentation/TEST-PLAN.md) for the API and lab test matrix, and [documentation/TEST-RESULTS.md](documentation/TEST-RESULTS.md) for the local unit-test record. Run secure API tests with:
 
 ```bash
 cd secure-store
