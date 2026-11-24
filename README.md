@@ -1,50 +1,91 @@
-# MONIX Fruit Shop 🍊
+# MONIX Fruit Shop — Dual-Environment Application Security Project 🍊
 
-A clean, responsive fruit-storefront experience for **MONIX Fruit Shop**. Built as a lightweight static website using HTML, CSS and vanilla JavaScript.
+A portfolio project that compares a secure-by-design fruit-shop storefront with an intentionally vulnerable web-security training lab. It demonstrates secure implementation patterns, controlled vulnerability demonstrations, and remediation concepts.
 
-## Features
+## Live environments
 
-- Fresh, modern light-theme storefront with responsive layouts
-- 18 fruit products with category labels, unit pricing and product cards
-- Category filtering, live search and price/name sorting
-- Favourite toggles and a working client-side shopping basket
-- Quantity controls and automatic subtotal calculation
-- Mobile-friendly navigation and basket drawer
-- Subtle motion with reduced-motion accessibility support
-- No framework, build step, database or API key required
+| Environment | Live URL | Status |
+|---|---|---|
+| Project Hub | https://monix-fruit-shop-portal.vercel.app | Deployed |
+| Secure Store | https://monix-secure-store.vercel.app | Deployed |
+| Vulnerable Lab | https://monix-vulnerable-lab.vercel.app | Deployed |
+| Previous Vulnerable Lab deployment | https://vulnlab-security-playground.vercel.app | Existing deployment |
 
-## Run locally
+## Repository layout
 
-1. Clone or download this repository.
-2. Open `index.html` in a modern browser.
+```text
+MONIX-FRUIT-SHOP/
+├── index.html                     # Original fruit storefront prototype
+├── portal/
+│   └── index.html                 # Portfolio project hub
+├── secure-store/
+│   ├── index.html                 # Secure-store UI
+│   ├── api/
+│   │   ├── products.js            # Server-owned product catalogue
+│   │   ├── quote.js               # Server-side cart validation and pricing
+│   │   └── health.js              # API health check
+│   ├── tests/
+│   │   └── quote.test.js          # Node test coverage for quote validation
+│   ├── vercel.json                # Security response headers
+│   └── README.md
+├── vulnerable-lab/
+│   ├── index.html                 # Browser-only security challenges
+│   └── README.md
+├── documentation/
+│   ├── ARCHITECTURE.md
+│   ├── SECURITY-SCOPE.md
+│   └── TEST-PLAN.md
+├── README.md
+└── LICENSE
+```
 
-For local development with a simple static server:
+## Secure Store — implemented controls
+
+- Server-owned product prices; client-submitted price values are ignored.
+- Cart API validates known product IDs, duplicate items, integer quantities and quantity limits.
+- Same-origin validation for browser POST requests when an Origin header is present.
+- Baseline CSP, clickjacking, MIME-sniffing, referrer and permissions headers.
+- API quote responses are not cached.
+- Browser output escapes catalogue text.
+
+### Secure Store limitations
+
+This is an educational storefront/API demo, not a production commerce system. It has no login, user accounts, persistent cart, order database, stock management, payment processing, email/SMS or delivery integrations. A quote is not an order. Do not use it for real transactions.
+
+## Vulnerable Lab — implemented exercises
+
+- DOM XSS: intentionally unsafe `innerHTML` sink.
+- Untrusted local storage: demonstrates why browser storage cannot be trusted.
+- Client-side access control: demonstrates why UI-only role checks do not provide authorization.
+- SQL injection concept: shows unsafe query concatenation but does not execute SQL or connect to a database.
+
+The lab is a browser-only, synthetic-data training page. Never enter real credentials or personal information. Use only for authorized learning and testing.
+
+## Test plan
+
+See [documentation/TEST-PLAN.md](documentation/TEST-PLAN.md) for the API and lab test matrix, and [documentation/TEST-RESULTS.md](documentation/TEST-RESULTS.md) for the local unit-test record. Run secure API tests with:
 
 ```bash
-python -m http.server 8000
+cd secure-store
+npm test
 ```
 
-Then visit http://localhost:8000.
+## Architecture and safe scope
 
-## Deploy
+- [Architecture](documentation/ARCHITECTURE.md)
+- [Authorized testing scope](documentation/SECURITY-SCOPE.md)
+- [Secure Store notes](secure-store/README.md)
+- [Vulnerable Lab notes](vulnerable-lab/README.md)
 
-This is a static site and can be deployed directly to Vercel, Netlify, GitHub Pages or any static hosting provider. For Vercel, import this repository and keep the framework preset as **Other**; no build command is required.
+The Secure Store and Vulnerable Lab are deployed as separate Vercel projects. They do not share databases, credentials, sessions or application state. The current secure API is stateless and does not connect to a database.
 
-## Important demo notes
+## Technology
 
-- Product names, prices and availability are sample storefront content and should be updated before real-world use.
-- Cart and favourites are client-side only and are not persisted to a server.
-- Checkout is intentionally a demo interaction. No orders, payments, accounts or delivery requests are submitted.
-- Product illustrations use emoji; replace these with licensed product photography for a production catalogue.
-
-## Project structure
-
-```
-MONIX-FRUIT-SHOP/
-├── index.html
-└── README.md
-```
+- HTML, CSS and JavaScript
+- Vercel serverless Node.js functions
+- GitHub
+- Node.js built-in test runner
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) if a license file is added to this repository.
+MIT — see [LICENSE](LICENSE).
